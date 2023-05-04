@@ -1,3 +1,4 @@
+import Table from './components/Table'
 
 
 function App() {
@@ -5,7 +6,7 @@ function App() {
 
   return (
     <>
-    <div>Hello</div> 
+    <Table/>
     </>
   )
 }
