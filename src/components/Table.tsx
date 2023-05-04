@@ -1,15 +1,25 @@
-import { Table } from "antd";
+import { Table,Button,Modal} from "antd";
 import userStore from '../Store/Store';
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
 
 const MyTable = () => {
     const { users, loading, error, fetchUsers } = userStore();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(()=>{
        fetchUsers();
     }, [])
 
+ /*   const addUser=()=>{
+        setIsOpen(true);
+    }
+
+    const closeModal=()=>{
+        setIsOpen(false);
+    }
+  
+*/
     const columns = [
         {
           title: 'Name',
@@ -28,12 +38,12 @@ const MyTable = () => {
         },
         {
           title: 'Street',
-          dataIndex: 'street',
+          dataIndex: ['address', 'street'],
           key: 'street',
         },
         {
           title: 'City',
-          dataIndex: 'city',
+          dataIndex: ['address', 'city'],
           key: 'city',
         },
         {
@@ -52,7 +62,7 @@ const MyTable = () => {
       }
     
   
-    return <Table dataSource={users} columns={columns}/>;
+    return <Table dataSource={users} columns={columns} rowKey='id'/>;
   }
   
   export default MyTable;

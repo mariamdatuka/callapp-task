@@ -28,6 +28,7 @@ const userStore = create<UserStore>()((set) => ({
     try {
       const response = await axios.get("http://localhost:3005/api/user");
       set({ users: response.data, loading: false,error: null });
+      console.log(response.data);
     } catch (error:any) {
       set({ error, loading: false, users:[] });
     }
