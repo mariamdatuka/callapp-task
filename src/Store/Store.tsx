@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create} from "zustand";
 import axios from "axios";
 
 export interface User {
@@ -18,6 +18,7 @@ export interface UserStore {
   loading: boolean;
   error: Error | null;
   fetchUsers: () => Promise<void>;
+  addUser: (user:User) => Promise<void>;
 }
 
 const userStore = create<UserStore>()((set) => ({
@@ -28,11 +29,22 @@ const userStore = create<UserStore>()((set) => ({
     try {
       const response = await axios.get("http://localhost:3005/api/user");
       set({ users: response.data, loading: false,error: null });
-      console.log(response.data);
     } catch (error:any) {
       set({ error, loading: false, users:[] });
     }
   },
-}));
+ addUser:async(formData:User):Promise<void>=>{
+   try {
+    await axios.post("http://localhost:3005/api/add", formData);
+    set((state) => ({ 
+      users: [...state.users, formData]
+    }));
+    } catch (error:any) {
+      set({ error, loading: false, users:[] });
+    }
+  },
+ }));
+
+
 
 export default userStore;
