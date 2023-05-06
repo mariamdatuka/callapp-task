@@ -9,7 +9,7 @@ const MyTable = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [formData, setFormData] = useState({
+    const formData = {
         name: "",
         email: "",
         gender: "",
@@ -19,7 +19,7 @@ const MyTable = () => {
         },
         phone: "",
         id: 0,
-      });
+      };
 
     const { Option } = Select;
     const [form] = Form.useForm();
@@ -122,7 +122,7 @@ const MyTable = () => {
         {
           title: 'Actions',
           key: 'actions',
-          render: (text: string, record: User) => (
+          render: (record: User) => (
             <Button type="link" danger onClick={() => handleDelete(record.id)}>
               Delete
             </Button>
