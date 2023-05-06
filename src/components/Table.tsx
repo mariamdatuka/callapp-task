@@ -47,7 +47,6 @@ const MyTable = () => {
         ...values,
         id: users.length + 1, // Generate a unique ID based on the current number of users
       };
-      console.log(newUser);
       await addUser(newUser);
       closeModal();
     } catch (error) {
@@ -65,12 +64,13 @@ const MyTable = () => {
   }
 
   //handle update when user changes existing info 
-  const handleUpdate=async(id:number, newData:User)=>{
+  const handleUpdate=async()=>{
     try {
       const values= await form.validateFields();
-      const updateValues:User={...values}
-      await updateUser(id,updateValues);
+      const updateValues={...selectedUser, ...values}
+      await updateUser(updateValues.id,updateValues);
       setIsModalOpen(false);
+      setSelectedUser(null);
     } catch (error) {
        console.log(error);
     }
@@ -79,10 +79,15 @@ const MyTable = () => {
   //handle double click
   const handleDoubleClick=(record:User)=>{
        setSelectedUser(record);
-       setFormData(record);
        setIsModalOpen(true);
   }
  
+  //handleCancel
+  const handleCancel=()=>{
+    setIsModalOpen(false);
+    setSelectedUser(null);
+  }
+
     const columns = [
         {
           title: 'Name',
@@ -145,7 +150,7 @@ const MyTable = () => {
             onCancel={closeModal}
             onOk={handleSubmitForm}
             >
-   <Form
+  <Form
       form={form}
       layout="vertical"
       initialValues={formData}
@@ -201,15 +206,12 @@ const MyTable = () => {
 <Modal
   title='update Info'
   open={isModalOpen}
-  onOk={()=>handleUpdate(selectedUser.id, formData)}
-  onCancel={() => {
-          setSelectedUser(null);
-          setIsModalOpen(false);
-        }}>
+  onOk={handleUpdate}
+  onCancel={handleCancel}>
     <Form
   form={form}
   layout="vertical"
-  initialValues={formData}
+  initialValues={selectedUser}
 >
   <Form.Item
     label="Name"
@@ -256,8 +258,7 @@ const MyTable = () => {
   >
     <Input />
   </Form.Item>
-</Form>
-
+ </Form>
 </Modal>
 <Table onRow={(record:User) => ({
     onDoubleClick: () => handleDoubleClick(record),
