@@ -27,23 +27,23 @@ const userStore = create<UserStore>()((set) => ({
   error: null,
   fetchUsers: async ():Promise<void> => {
     try {
-      const response = await axios.get("http://localhost:3005/api/user");
+      const response = await axios.get("https://callapi-pcuu.onrender.com/api/user");
       set({ users: response.data, loading: false,error: null });
     } catch (error:any) {
       set({ error, loading: false, users:[] });
     }
   },
- addUser:async(formData:User):Promise<void>=>{
-   try {
-    await axios.post("http://localhost:3005/api/add", formData);
-    set((state) => ({ 
-      users: [...state.users, formData]
-    }));
-    } catch (error:any) {
-      set({ error, loading: false, users:[] });
-    }
-  },
- }));
+  addUser:async(formData:User):Promise<void>=>{
+    try {
+     await axios.post("https://callapi-pcuu.onrender.com/api/add", formData);
+     set((state) => ({ 
+       users: [...state.users, formData]
+     }));
+     } catch (error:any) {
+       set({ error, loading: false, users:[] });
+     }
+   },
+  }));
 
 
 

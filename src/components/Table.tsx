@@ -1,10 +1,10 @@
-import { Table,Button,Modal,Input,Form,Select} from "antd";
+import { Table,Button,Modal, Input,Select,Form} from "antd";
 import 'antd/dist/antd.css';
-import userStore from '../Store/Store';
+import userStore,{User} from '../Store/Store';
 import { useEffect,useState } from "react";
 
 const MyTable = () => {
-    const { users, loading, error, fetchUsers, addUser} = userStore();
+  const { users, loading, error, fetchUsers, addUser} = userStore();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [formData, setFormData] = useState({
         name: "",
@@ -39,9 +39,13 @@ const MyTable = () => {
   //handle form on submit
   const handleSubmitForm = async() => {
     try {
-      const values= await form.validateFields()
-      console.log(values);
-      await addUser(values);
+      const values= await form.validateFields();
+      const newUser: User = {
+        ...values,
+        id: users.length + 1, // Generate a unique ID based on the current number of users
+      };
+      console.log(newUser);
+      await addUser(newUser);
       closeModal();
     } catch (error) {
       console.log("Validate Failed:", error);
